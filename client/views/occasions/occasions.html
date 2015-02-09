@@ -1,0 +1,113 @@
+<template name="occasions">
+    {{#if isAdmin}}
+    {{> newOccasionForm}}
+    <input class="btn btn-default" type="button" value="Assign slots" id="check-deadlines">
+    {{/if}}
+    <h3> Office Hours </h3>
+    <div class="panel-group" id="panel-accordion">
+        {{#if numOccasions}}
+            {{#each occasions}}
+            {{> occasionPanel}}
+            {{/each}}
+        {{else}}
+            <p>There are no scheduled office hours.</p>
+        {{/if}}
+
+    </div>
+</template>
+
+<template name="occasionPanel">
+    <div class="panel panel-default" id="{{_id}}">
+        <div class="panel-heading" id="{{_id}}-panel-heading">
+            <h4 class="panel-title"><a data-toggle="collapse" data-target="#{{_id}}-panel" href="#{{_id}}-panel">{{startString}}</a></h4>
+        </div>
+        <div id="{{_id}}-panel" class="panel-collapse collapse">
+            <div class="panel-body occasion-panel-body">
+                This office hours will be held at {{location}} by {{instructor}}.
+                <br />
+                {{#if slotsAssigned}}
+                Office hours have already been assigned.
+                <br />
+                {{else}}
+                The registration deadline {{#if registrationDeadlinePassed}}was{{else}}is{{/if}} {{registrationDeadlineString}}.
+                <br />
+                The waitlist length is currently {{waitListLength}}.
+                <br />
+                {{/if}}
+                {{#if onWaitlist}}
+                <a href="#" class="btn btn-danger leave-waitlist-button {{#if notAllowedToLeave ..}}disabled{{/if}}">Leave waitlist</a>
+                {{else}}
+                <a href="#" class="btn btn-primary join-waitlist-button {{#if notAllowedToRegister ..}}disabled{{/if}}">Join waitlist</a>
+                {{/if}}
+                {{#if isAdmin}}
+                    <td><a href="#" class="occasion-delete" data-id="{{_id}}">Delete this office hours.</a></td>
+                {{/if}}
+            </div>
+            {{#if slotsAssigned}}
+              {{> slotTable}}
+            {{/if}}
+        </div>
+    </div>
+</template>
+<template name="slotTable">
+    <table class="table slot-table">
+        <caption>Register for the slots that you'd like to attend. Each slot is 10 minutes in length. <br />You will be notified one hour before office hours begins if you were selected.</caption>
+        <thead>
+            <tr>
+                <th>Start time</th>
+                <th>Slot assignment</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each slots}}
+            {{> slotTableRow}}
+            {{/each}}
+        </tbody>
+    </table>
+</template>
+
+<template name="slotTableRow">
+    <tr>
+        <td>{{startString}}</td>
+        <td>{{candidateSelected}}</td>
+    </tr>
+</template>
+<template name="newOccasionForm">
+    <div class="panel panel-default" id="panel1">
+        <div class="panel-heading">
+            <h4 class="panel-title"><a data-toggle="collapse" data-target="#collapseOccasionForm"
+               href="#collapseOccasionForm">
+               Create new office hours
+           </a>
+       </h4>
+   </div>
+   <div id="collapseOccasionForm" class="panel-collapse collapse">
+    <div class="panel-body">
+        <form class="new-event">
+            <div class="form-group">
+                <label for="startDatePicker">Start time</label>
+                <div id="startDatePicker" class="input-group datetimepicker">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                    <input class="set-due-date form-control" type="text" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="durationPicker">Duration</label> <br />
+                <input type="number" id="durationPicker" min="1" max="9" value="2">hours
+            </div>
+            <div class="form-group">
+                <label for="locationPicker">Location</label> <br />
+                <input type="text" id="locationPicker" min="1" max="9">
+            </div>
+            <div class="form-group">
+                <label for="instructorPicker">Instructor</label> <br />
+                <input type="text" id="instructorPicker" min="1" max="9">
+            </div>
+            <p class="notes">The office hours will be divided into 10 minute slots.</p>
+            <button type="submit" class="btn btn-default">Create</button>
+        </form>
+    </div>
+</div>
+</div>
+
+</template>

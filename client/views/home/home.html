@@ -1,0 +1,38 @@
+<template name="Home">
+  {{#if currentUser}}
+  {{#if currentUserHasEmail}}
+  {{> occasions}}
+  {{else}}
+  {{> EnterEmail}}
+  {{/if}}
+  {{else}}
+  <div class="jumbotron">
+    <h1> EECS 482 Reservation System</h1>
+    <p>You can register for office hours here. Sign up to get started!</p>
+    <button type="button" class="btn btn-primary btn-lg" id="signup-button">
+      Sign up with Github <i class="fa fa-github-alt"></i>
+    </button>
+  </div>
+  {{/if}}
+</template>
+
+<template name="EnterEmail">
+  <div class="alert alert-danger" role="alert">
+    Woah there! We don't have an email on file for you (you don't have one in your public<a href="https://github.com/settings/profile"> GitHub profile</a>.) <br><br>We need it so we can notify you of office hours assignments.
+    Please enter your email in the form below.
+  </div>
+  <form class="email-correction">
+
+    <div class="form-group">
+      <label for="emailPicker">Email</label> <br />
+      <input type="email" id="emailPicker" class="emailBox"> <br />
+      <label for="emailVerifier">Type email again</label> <br />
+      <input type="email" id="emailVerifier" class="emailBox">
+    </div>
+    {{#if emailsDontMatch}}
+    <button type="submit" class="btn btn-default" disabled >Submit</button>
+    {{else}}
+    <button type="submit" class="btn btn-default">Submit</button>
+    {{/if}}
+  </form>
+</template>
